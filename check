@@ -1,0 +1,15 @@
+#!/bin/bash
+
+go build -o mpl $PWD
+
+zsh minquine > q1
+bash minquine > q2
+dash minquine > q3
+ksh minquine > q4
+# heirloom shell was tricky to build in 2026.
+# You're on your own with that.
+#/home/bediger/src/heirloom-sh-050706/sh minquine > q5
+./mpl minquine > q6
+
+# All checksums should be equal
+cksum minquine q?

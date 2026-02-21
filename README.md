@@ -70,7 +70,7 @@ Strings are consecutive characters.
 They may appear as single-quoted (`'letters in a string'`)
 or double-quoted (`"letters in a string"`),
 or even unquoted.
-Before assigment to a variable,
+Before assignment to a variable,
 unquoted and double-quoted strings have any variable's values interpolated.
 Variable values must be set before use.
 Interpolated variables appear as a dollar sign (`$`) immediately followed by
@@ -79,7 +79,7 @@ a name: `$some_name`.
 ### Statement examples
 
 My small language is definitely influenced by traditional Unix shell syntax.
-It should consitute a strict subset of that traditional shell syntax.
+It should constitute a strict subset of that traditional shell syntax.
 
 #### Assignment
 
@@ -146,7 +146,7 @@ $ ./mpl minquine
 $ ./check
 ```
 
-The script `check` uses `bash`, `dash`, `zsh`, `ksh` and the minimual
+The script `check` uses `bash`, `dash`, `zsh`, `ksh` and the minimal
 programming language interpreter to run the quine.
 All outputs are lexically equal.
 
@@ -173,13 +173,13 @@ This style simplifies the code of by avoiding
 having to retain enough state to re-start the lexing
 when a command string is found.
 
-Parsing without a parser-generator is idosyncratic.
+Parsing without a parser-generator is idiosyncratic.
 I include a file named `oddities`, which is valid code in my programming language,
 containing some I discovered.
 I expect other weirdness exists.
 
 Unlike in traditional Unix shells, the `echo` part of output statements
-does not execute a subprocess.
+does not execute a sub process.
 `echo` is the only built-in.
 
 Since my programming language does not have looping, if/then/else, recursion,

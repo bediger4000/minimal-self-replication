@@ -50,6 +50,8 @@ echo st=$sq$st$sq;echo dq=$sq$dq$sq;echo sq=$dq$sq$dq;echo $st
 
 The above code replicates in all the shells I tried,
 and simplifies variable value interpolation code.
+If my minimal programming language can execute this quine,
+I consider it finished and successful.
 
 ## My programming language
 
@@ -76,6 +78,9 @@ a name: `$some_name`.
 
 ### Statement examples
 
+My small language is definitely influenced by traditional Unix shell syntax.
+It should consitute a strict subset of that traditional shell syntax.
+
 #### Assignment
 
 ```
@@ -98,6 +103,85 @@ Variables `a` and 'c' will evaluate to "abcdefgh" on interpolation,
 Variable `b` will evaluate to "abc$d".
 Since the string assigned to `b` has single-quotes, no variable interpolation takes place.
 
+My programming language does not allow variable interpolation
+on the left had side of an `=`.
+The variable name, the `=`, and the string literal must be adjacent,
+with no white space.
+
 #### Output
 
+All output is via `echo` statements:
+
+```
+echo 'now is the time'
+v='now is the time
+echo $v
+```
+The 3-line program above produces this output:
+
+```
+now is the time
+now is the time
+```
+
+Double-quoted strings have variables (if any appear) interpolated before output.
+
+```
+a="now is the time "
+b="for all good men "
+c="to come to the aid of their country"
+echo "$a$b$c"
+```
+
+That 4-line program produces "now is the time for all good men to come to the aid of their country".
+
 ## Building the interpreter
+
+```
+$ git clone https://github.com/bediger4000/minimal-self-replication.git
+$ cd minimal-self-replication
+$ go test -v ./...
+$ go build -o mpl $PWD
+$ ./mpl minquine
+$ ./check
+```
+
+The script `check` uses `bash`, `dash`, `zsh`, `ksh` and the minimual
+programming language interpreter to run the quine.
+All outputs are lexically equal.
+
+#### Design
+
+The idea was to implement a small subset of traditional Unix shell language:
+variable assignment, string interpolations in string literals,
+and `echo` statements.
+I did not use a compiler-style lexer/parser, and walk the parse tree to execute programs.
+That seemed like overkill.
+
+Because the two kinds of statements can be separated by semicolons,
+my lexing and parsing code breaks the input into "command strings",
+and then parses each command string as part of execution.
+One criticism I've read of traditional Unix shells is that they don't
+really have a grammar.
+I may have encountered a small example of that.
+
+I do have a separate goroutine breaking the input file contents
+into command strings,
+passing the command strings to the main goroutine
+via a channel.
+This style simplifies the code of by avoiding
+having to retain enough state to re-start the lexing
+when a command string is found.
+
+Parsing without a parser-generator is idosyncratic.
+I include a file named `oddities`, which is valid code in my programming language,
+containing some I discovered.
+I expect other weirdness exists.
+
+Unlike in traditional Unix shells, the `echo` part of output statements
+does not execute a subprocess.
+`echo` is the only built-in.
+
+Since my programming language does not have looping, if/then/else, recursion,
+or `goto`, it is not [Turing complete](https://en.wikipedia.org/wiki/Turing_completeness).
+Every program does terminate in a finite number of steps.

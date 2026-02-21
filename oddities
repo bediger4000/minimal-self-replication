@@ -1,0 +1,16 @@
+noquotes=unqouted with spaces in this string
+noclosequote='this string has no close quote
+noopenquote=this string has no open quote'
+
+echo $noquotes
+echo $noclosequote
+echo $noopenquote
+
+var="this doesn't work"
+echo $varIABLE
+
+var="this does work"
+echo IABLE$var
+
+finaldollar=you can have a final$
+echo $finaldollar

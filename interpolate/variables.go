@@ -5,7 +5,7 @@ import (
 	"unicode"
 )
 
-func Variables(dict map[string][]byte, originalString string) string {
+func Variables(originalString string, dict map[string][]byte) string {
 	var substituted strings.Builder
 
 	findingVariable := false

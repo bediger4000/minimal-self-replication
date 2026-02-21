@@ -72,7 +72,7 @@ func TestVariables(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Variables(tt.args.dict, tt.args.originalString); got != tt.want {
+			if got := Variables(tt.args.originalString, tt.args.dict); got != tt.want {
 				t.Errorf("Variables() = %v, want %v", got, tt.want)
 			}
 		})

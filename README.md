@@ -36,9 +36,10 @@ If an interpreter is to run this program, it has to have:
     - It could also have an escape character to do the same thing.
 5. Interpolation of named variables, the `$st` above.
     - This has to happen before the `echo` command executes.
+    - Adjacent substitutions result in a concatentation of their values.
 6. Program statements separated by both newlines and semicolons.
 
-The quine doesn't strictly need `${name}` variable interpolation.
+The 1988 quine doesn't strictly need `${name}` variable interpolation.
 I simplified my 1980s quine to this:
 
 ```
@@ -49,7 +50,7 @@ echo st=$sq$st$sq;echo dq=$sq$dq$sq;echo sq=$dq$sq$dq;echo $st
 ```
 
 The above code replicates in all the shells I tried,
-and simplifies variable value interpolation code.
+and simplifies interpreter variable interpolation code.
 If my minimal programming language can execute this quine,
 I consider it finished and successful.
 
@@ -69,7 +70,8 @@ The have a letter as their first character.
 Strings are consecutive characters.
 They may appear as single-quoted (`'letters in a string'`)
 or double-quoted (`"letters in a string"`),
-or even unquoted.
+or even unquoted, as the characters after an `=` and before end-of-line
+or `;`, end-of-command.
 Before assignment to a variable,
 unquoted and double-quoted strings have any variable's values interpolated.
 Variable values must be set before use.

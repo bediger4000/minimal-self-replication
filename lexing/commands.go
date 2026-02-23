@@ -13,6 +13,11 @@ func NewCommandLexer(runes []rune) func() string {
 	}
 }
 
+// doCommandLexing runs in its own goroutine.
+// It collects runes into "commands", which are either
+// distinct lines in the input or ';' terminated substrings
+// of lines in the input. Any quoted string literals of
+// the interpreted language retain their quote characters.
 func doCommandLexing(outCh chan string, runes []rune) {
 	var inQuotedString bool
 	var quoteChar rune
@@ -33,7 +38,7 @@ func doCommandLexing(outCh chan string, runes []rune) {
 			continue
 		}
 
-		// not reading through a string literal (single- or double-quoted)
+		// Not reading through a string literal (single- or double-quoted)
 
 		if r == '\'' || r == '"' {
 			cmd.WriteRune(r)
@@ -42,7 +47,7 @@ func doCommandLexing(outCh chan string, runes []rune) {
 			continue
 		}
 
-		// ; terminates a command when not reading a quoted string
+		// ; terminates a command when not reading a quoted string.
 		if r == ';' {
 			sendString(outCh, cmd)
 			continue
@@ -51,12 +56,16 @@ func doCommandLexing(outCh chan string, runes []rune) {
 		cmd.WriteRune(r)
 	}
 
-	// might hit end-of-file without finding end-of-command
+	// Might hit end-of-file without finding end-of-command.
 	sendString(outCh, cmd)
 
 	close(outCh)
 }
 
+// sendString creates a string from the strings.Builder
+// argument, and writes it to the output channel.
+// Never writes a zero-length string, because that
+// signifies end-of-input.
 func sendString(outCh chan string, bldr *strings.Builder) {
 	if bldr.Len() == 0 {
 		return

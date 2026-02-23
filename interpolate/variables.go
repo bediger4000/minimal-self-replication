@@ -28,14 +28,14 @@ func Variables(originalString string, dict map[string][]byte) string {
 		}
 
 		if !(unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_') {
-			// r is next rune *after* the variable name
+			// r contains the next rune *after* the variable name
 
-			// look up variable name's value, all name's runes in variableName
+			// Look up variable name's value, all name's runes now written to variableName
 			if value, ok := dict[variableName.String()]; ok {
-				// write variable's value into output string
+				// Write variable's value into output string
 				substituted.Write(value)
 			}
-			// no interpolated bytes for a variable not found
+			// No interpolated bytes for a variable not found
 			variableName.Reset()
 			if r != '$' {
 				findingVariable = false
@@ -44,16 +44,16 @@ func Variables(originalString string, dict map[string][]byte) string {
 			continue
 		}
 
-		// put together variable's value by reading "identifier" runes one by one
+		// Put together variable's value by reading "identifier" runes one by one
 		variableName.WriteRune(r)
 	}
 
 	if variableName.Len() > 0 {
 		if value, ok := dict[variableName.String()]; ok {
-			// 3. write variable's value into output string
+			// Write variable's value into output string
 			substituted.Write(value)
 		}
-		// no interpolated bytes for a variable not found
+		// No interpolated bytes for a variable not found
 	}
 
 	return substituted.String()
